@@ -8,14 +8,13 @@
 ?>
 <?php get_header(); ?>
 
-<main>
-    <?php
-    if ( have_posts() ) :
-        while ( have_posts() ) :
-            the_post();
-        endwhile;
-    endif;
-    ?>
+<main class="container mx-auto flex justify-between py-6 max-xl:px-4">
+    <?php if ( have_posts() ) : ?>
+        <?php while ( have_posts() ) : ?>
+            <?php the_post(); ?>
+            <?php the_title(); ?>
+        <?php endwhile; ?>
+    <?php endif; ?>
 </main>
 
 <?php get_sidebar(); ?>

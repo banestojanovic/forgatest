@@ -1,3 +1,6 @@
 import './tailwind.css'
+import Alpine from 'alpinejs'
 
-console.log("Hello via Bun!");
+window.Alpine = Alpine
+
+Alpine.start()
