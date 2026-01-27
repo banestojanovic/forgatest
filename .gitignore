@@ -32,6 +32,13 @@ wp-config.php
 # Log files
 *.log
 
+# Environment files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
 # htaccess
 /.htaccess
 
