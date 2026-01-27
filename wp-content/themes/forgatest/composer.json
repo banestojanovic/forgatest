@@ -1,0 +1,16 @@
+{
+    "name": "bane/forgatest",
+    "description": "Forga.io test project",
+    "autoload": {
+        "psr-4": {
+            "Forgatest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Branislav Stojanovic",
+            "email": "banestojanovics@gmail.com"
+        }
+    ],
+    "require": {}
+}

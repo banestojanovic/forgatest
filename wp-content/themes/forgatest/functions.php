@@ -9,6 +9,8 @@
  * @since ForgaCommerce 1.0
  */
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 if ( ! function_exists( 'ft_is_vite_dev_server_running' ) ) {
 	function ft_is_vite_dev_server_running(): bool {
 		return defined( 'FT_VITE_DEV' ) && FT_VITE_DEV === true;
