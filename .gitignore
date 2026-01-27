@@ -34,3 +34,5 @@ wp-config.php
 
 # htaccess
 /.htaccess
+
+/wp-content/themes/forgatest
