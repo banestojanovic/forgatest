@@ -1,5 +1,4 @@
 # How to use the Forgatest Theme
-- The theme files can be accessed from `wp-content/themes/forgatest` folder
 
 ### Some notes
 - This theme is designed for testing purposes.
@@ -20,7 +19,6 @@
 
 ### Folder tree structure
 ```forgatest-theme/
-├── dist/ (built assets)
 ├── inc/
 │   ├── theme-hooks.php
 │   └── wc-hide-categories.php
@@ -113,7 +111,7 @@
   1. **WPGraphQL / REST API Extensions**: Headless sites often use WPGraphQL or JWT Authentication for secure data fetching. Once you return to a classic theme, these become unnecessary overhead and potential security holes.
   2. **Webhook Managers**: Any plugins sending real-time data to front-end services would be redundant.
   3. **Custom Redirect Plugins**: Many headless setups use plugins to redirect WordPress front-end requests to the headless front-end. These would no longer be needed.
-  
+
 ### How would you ensure products • orders • users • SEO data remain untouched?
 - First of all, the classic theme uses the same WordPress and WooCommerce core functionalities as the headless setup, so data integrity is maintained by simply cloning or preserving the database.
 - Products & Orders: These live in `wp_posts`, `wp_postmeta`, and specialized `wc_` tables. Since the classic theme uses the same core WooCommerce functions as the API, this data remains untouched.
@@ -132,10 +130,10 @@
   7. Ensure all data (products, orders, users, SEO) is intact.
   8. Develop and test the classic theme on the staging site.
   9. Finalize the classic theme and ensure all functionalities work as expected.
-  10Prepare for deployment to production.
+     10Prepare for deployment to production.
   11. Deploy the staging site to production.
   12. Monitor the live site for any issues.
-  
+
 
 - **Rollback Strategy**:
   1. Keep a recent backup of the production site before migration.
@@ -158,7 +156,7 @@
 
 ### Option A - QA & Production Readiness
 
-#### How you would QA WooCommerce functionality (cart, checkout, emails) 
+#### How you would QA WooCommerce functionality (cart, checkout, emails)
 - Test the cart by adding, updating, and removing products to ensure correct behavior.
 - Test the checkout process with various payment gateways to ensure successful transactions.
 - Verify that order confirmation emails are sent correctly to both the customer and admin.
