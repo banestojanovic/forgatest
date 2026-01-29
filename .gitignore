@@ -42,4 +42,9 @@ wp-config.php
 # htaccess
 /.htaccess
 
-/wp-content/themes/forgatest
+# Ignore all other themes
+/wp-content/themes/*
+
+# Allow the forgatest theme to be tracked
+!wp-content/themes/forgatest/
+!wp-content/themes/forgatest/**
