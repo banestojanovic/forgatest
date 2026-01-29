@@ -19,29 +19,31 @@
 
 ### Folder tree structure
 ```forgatest-theme/
+├── dist/ (built assets)
 ├── inc/
-│   ├── custom-functions.php
-│   └── theme-hooks.php
+│   ├── theme-hooks.php
+│   └── wc-hide-categories.php
+│   └── woocommerce.php
 ├── resources/
 │   ├── css/
+│   │   └── index.ts
 │   │   └── style.css
-│   ├── js/
-│   │   └── main.js
-│   └── images/
-│       └── logo.png
 ├── src/
-│   ├── Theme.php
-│   └── Setup.php
-├── templates/
-│   ├── page-custom.php
-│   └── single-post.php
+├── template-parts/
+│   ├── header-main.php
+│   └── main-nav.php
+│   └── main-nav-mobile.php
+├── vendor/
+│   └── composer/
+│   └── autoload.php
 ├── woocommerce/
 │   ├── single-product.php
-│   └── archive-product.php
-├── vendor/
-│   └── autoload.php
+├── footer.php
 ├── functions.php
+├── header.php
+├── index.php
 ├── style.css
+├── vite-config.ts
 └── readme.md
 ```
 
@@ -93,13 +95,13 @@
 ## Task 3
 ### How would you clone the production site safely?
 - To clone the production site safely, I would follow these steps:
-    1. **Backup the Production Site**: Use a reliable backup plugin or tool to create a full backup of the production site, including the database and all files.
-    2. **Set Up a Staging Environment**: Create a separate staging environment on a subdomain or local server where the cloned site will reside.
-    3. **Copy Files and Database**: Transfer the backed-up files and database to the staging environment. This can be done using FTP/SFTP for files and phpMyAdmin or command line for the database.
-    4. **Update Configuration**: Update the `wp-config.php` file in the staging environment to reflect the new database credentials and any other necessary configurations.
-    5. **Search and Replace URLs**: Use a search and replace tool to update any URLs in the database that point to the production site to point to the staging site instead.
-    6. **Test the Staging Site**: Thoroughly test the staging site to ensure everything is functioning correctly.
-    7. **Secure the Staging Site**: Implement security measures such as password protection or restricting access to prevent unauthorized access.
+  1. **Backup the Production Site**: Use a reliable backup plugin or tool to create a full backup of the production site, including the database and all files.
+  2. **Set Up a Staging Environment**: Create a separate staging environment on a subdomain or local server where the cloned site will reside.
+  3. **Copy Files and Database**: Transfer the backed-up files and database to the staging environment. This can be done using FTP/SFTP for files and phpMyAdmin or command line for the database.
+  4. **Update Configuration**: Update the `wp-config.php` file in the staging environment to reflect the new database credentials and any other necessary configurations.
+  5. **Search and Replace URLs**: Use a search and replace tool to update any URLs in the database that point to the production site to point to the staging site instead.
+  6. **Test the Staging Site**: Thoroughly test the staging site to ensure everything is functioning correctly.
+  7. **Secure the Staging Site**: Implement security measures such as password protection or restricting access to prevent unauthorized access.
 - We can use plugins like Duplicator, All-in-One WP Migration, or WP Staging to simplify the cloning process or maybe hosting provides that feature for us. Many of them do.
 - For database search and replace we can use WP-CLI or plugins like Better Search Replace. Ultimately, we can use mysql commands directly if we have access to the database.
 - We should always ensure that sensitive data is protected during the cloning process.
@@ -107,9 +109,9 @@
 
 ### Which plugins or services related to headless setup would be removed or disabled?
 - In a headless WordPress setup, we would typically disable or remove plugins that are not necessary for the backend functionality. This may include:
-    1. **WPGraphQL / REST API Extensions**: Headless sites often use WPGraphQL or JWT Authentication for secure data fetching. Once you return to a classic theme, these become unnecessary overhead and potential security holes.
-    2. **Webhook Managers**: Any plugins sending real-time data to front-end services would be redundant.
-    3. **Custom Redirect Plugins**: Many headless setups use plugins to redirect WordPress front-end requests to the headless front-end. These would no longer be needed.
+  1. **WPGraphQL / REST API Extensions**: Headless sites often use WPGraphQL or JWT Authentication for secure data fetching. Once you return to a classic theme, these become unnecessary overhead and potential security holes.
+  2. **Webhook Managers**: Any plugins sending real-time data to front-end services would be redundant.
+  3. **Custom Redirect Plugins**: Many headless setups use plugins to redirect WordPress front-end requests to the headless front-end. These would no longer be needed.
 
 ### How would you ensure products • orders • users • SEO data remain untouched?
 - First of all, the classic theme uses the same WordPress and WooCommerce core functionalities as the headless setup, so data integrity is maintained by simply cloning or preserving the database.
@@ -120,23 +122,66 @@
 
 ### Include: Migration checklist and rollback strategy
 - **Migration Checklist**:
-    1. Backup the production site (files and database).
-    2. Set up a staging environment.
-    3. Clone the production site to the staging environment.
-    4. Update configuration files and URLs.
-    5. Test the staging site thoroughly.
-    6. Disable unnecessary plugins for headless setup.
-    7. Ensure all data (products, orders, users, SEO) is intact.
-    8. Develop and test the classic theme on the staging site.
-    9. Finalize the classic theme and ensure all functionalities work as expected.
-       10Prepare for deployment to production.
-    11. Deploy the staging site to production.
-    12. Monitor the live site for any issues.
+  1. Backup the production site (files and database).
+  2. Set up a staging environment.
+  3. Clone the production site to the staging environment.
+  4. Update configuration files and URLs.
+  5. Test the staging site thoroughly.
+  6. Disable unnecessary plugins for headless setup.
+  7. Ensure all data (products, orders, users, SEO) is intact.
+  8. Develop and test the classic theme on the staging site.
+  9. Finalize the classic theme and ensure all functionalities work as expected.
+     10Prepare for deployment to production.
+  11. Deploy the staging site to production.
+  12. Monitor the live site for any issues.
 
 
 - **Rollback Strategy**:
-    1. Keep a recent backup of the production site before migration.
-    2. If issues arise post-migration, restore the backup to revert to the previous state.
-    3. Document any changes made during the migration for easier troubleshooting.
+  1. Keep a recent backup of the production site before migration.
+  2. If issues arise post-migration, restore the backup to revert to the previous state.
+  3. Document any changes made during the migration for easier troubleshooting.
 
 ## Task 4
+- The code for this task can be found in `inc/wc-hide-categories.php` file.
+- There I used WP hooks to hide specific product categories from the menu and category listings.
+- I made sure that products from the hidden categories are not displayed in the shop loop by using the `woocommerce_product_query` action hook to modify the WC main query.
+- I also made sure that the products from the hidden categories are still accessible via direct links by not modifying the product query itself.
+- I created custom term meta fields to manage the visibility of categories.
+- This way, we can easily toggle the visibility of categories without modifying the core WooCommerce functionality.
+- This approach ensures that the hidden categories do not interfere with the overall functionality of the WooCommerce
+- The other option is to create a global setting in the theme customizer or theme settings page to manage hidden categories.
+- This way, we can have a centralized place to manage the visibility of categories.
+- In `inc/theme-hooks.php` file, I hooked the functionality to appropriate WooCommerce hooks to ensure that the categories are hidden from the menu that was custom created.
+
+## Optional Bonus Task
+
+### Option A - QA & Production Readiness
+
+#### How you would QA WooCommerce functionality (cart, checkout, emails)
+- Test the cart by adding, updating, and removing products to ensure correct behavior.
+- Test the checkout process with various payment gateways to ensure successful transactions.
+- Verify that order confirmation emails are sent correctly to both the customer and admin.
+- Test edge cases such as empty carts, invalid payment details, and out-of-stock products.
+- Use automated testing tools like Selenium or Cypress to simulate user interactions and validate functionality.
+- Session persistence testing to ensure cart contents are retained across sessions.
+- Race condition testing to ensure that simultaneous actions (like multiple users checking out) do not cause issues.
+- Guest checkout testing to ensure that users can complete purchases without creating an account.
+- Email deliverability testing (new order, invoice and similar) to ensure that order confirmation emails are not marked as spam.
+
+#### What you would test before launch
+- Ensure all WooCommerce features (product display, cart, checkout, payment gateways) work as expected.
+- That all the links are preserved and working correctly to avoid losing SEO rankings.
+- That the theme is fully responsive and works on all devices.
+- Verify that SEO settings and metadata are correctly implemented.
+- Check site speed and responsiveness under load.
+- Verify that sensitive data is protected and that there are no vulnerabilities.
+- Ensure compatibility with different browsers and devices.
+
+#### Common WooCommerce issues you proactively test for
+- Payment gateway failures or errors during checkout.
+- Cart abandonment issues.
+- Email deliverability problems.
+- Plugin conflicts that may affect WooCommerce functionality.
+- Running out of memory or server resources during high traffic.
+- Broken links or missing images.
+- Issues with tax calculations or shipping rates.

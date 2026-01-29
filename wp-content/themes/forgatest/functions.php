@@ -13,3 +13,4 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 require_once __DIR__ . '/inc/theme-hooks.php';
 require_once __DIR__ . '/inc/woocommerce.php';
+require_once __DIR__ . '/inc/wc-hide-categories.php';

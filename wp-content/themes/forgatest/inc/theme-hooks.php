@@ -40,6 +40,33 @@ if ( ! function_exists( 'ft_theme_setup' ) ) {
 	add_action( 'after_setup_theme', 'ft_theme_support' );
 }
 
+if ( ! function_exists( 'ft_should_exclude_menu_item' ) ) {
+    /**
+     * Determine if a menu item should be excluded from the menu builder.
+     *
+     * @param object $item The menu item object.
+     * @param array $hidden_cat_ids Array of hidden WooCommerce category IDs.
+     * @return bool True to exclude, false to include.
+     */
+    function ft_should_exclude_menu_item( $item, $hidden_cat_ids ): bool {
+        $exclude = false;
+        if ( 'taxonomy' === $item->type && 'product_cat' === $item->object ) {
+            if ( in_array( $item->object_id, (array) $hidden_cat_ids ) ) {
+                $exclude = true;
+            }
+        }
+
+        /**
+         * Filter to allow custom exclusion logic for menu items in ft_menu_builder.
+         *
+         * @param bool   $exclude         Whether to exclude the menu item.
+         * @param object $item            The menu item object.
+         * @param array  $hidden_cat_ids  Array of hidden WooCommerce category IDs.
+         */
+        return apply_filters( 'ft_menu_builder_exclude_menu_item', $exclude, $item, $hidden_cat_ids );
+    }
+}
+
 if ( ! function_exists( 'ft_menu_builder' ) ) {
 	function ft_menu_builder( $menu_id = '' ): array {
 		$menu  = ft_get_nav_menu_items_by_location( $menu_id );
@@ -50,7 +77,13 @@ if ( ! function_exists( 'ft_menu_builder' ) ) {
 			return [];
 		}
 
+		$hidden_cat_ids = ft_get_hidden_category_ids();
+
 		foreach ( $menu as $item ) {
+			if ( ft_should_exclude_menu_item( $item, $hidden_cat_ids ) ) {
+				continue;
+			}
+
 			$items[ $item->ID ] = [
 				'ID'       => url_to_postid( $item->url ),
 				'title'    => $item->title,
@@ -79,7 +112,7 @@ if ( ! function_exists( 'ft_menu_builder' ) ) {
 			$remove_parent( $item );
 		}
 
-		return $tree;
+		return apply_filters( 'ft_menu_builder', $items, $menu_id );
 	}
 }
 
