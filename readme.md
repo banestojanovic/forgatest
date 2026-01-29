@@ -1,4 +1,5 @@
 # How to use the Forgatest Theme
+- The theme files can be accessed from `wp-content/themes/forgatest` folder
 
 ### Some notes
 - This theme is designed for testing purposes.
