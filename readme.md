@@ -144,7 +144,7 @@
 - The code for this task can be found in `inc/wc-hide-categories.php` file.
 - There I used WP hooks to hide specific product categories from the menu and category listings.
 - I made sure that products from the hidden categories are not displayed in the shop loop by using the `woocommerce_product_query` action hook to modify the WC main query.
-- I also made sure that the products from the hidden categories are still accessible via direct links by not modifying the product query itself.
+- I also made sure that the hidden categories and the products from the hidden categories are still accessible via direct links by not modifying the product query itself.
 - I created custom term meta fields to manage the visibility of categories.
 - This way, we can easily toggle the visibility of categories without modifying the core WooCommerce functionality.
 - This approach ensures that the hidden categories do not interfere with the overall functionality of the WooCommerce
