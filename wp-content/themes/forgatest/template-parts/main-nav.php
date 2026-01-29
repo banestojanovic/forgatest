@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 };
 
-if ( ! function_exists( 'pbt_render_menu_item' ) ) :
-    function pbt_render_menu_item( $item, $is_submenu = false ): string {
+if ( ! function_exists( 'ft_render_menu_item' ) ) :
+    function ft_render_menu_item( $item, $is_submenu = false ): string {
         $menu_item_active_class     = get_the_ID() == $item['ID'] ? 'text-app' : '';
         $sub_menu_item_active_class = get_the_ID() == $item['ID'] ? 'text-app' : '';
         $wrapper_class              = 'flex items-center text-base';
@@ -58,7 +58,7 @@ if ( ! function_exists( 'pbt_render_menu_item' ) ) :
                     <div class="rounded-md bg-white shadow-lg ring-1 ring-border focus:outline-none">
                         <div class="p-4 flex flex-col" role="none">
                             <?php foreach ( $item['children'] as $child ): ?>
-                                <?php echo pbt_render_menu_item( $child, true ); ?>
+                                <?php echo ft_render_menu_item( $child, true ); ?>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -71,9 +71,9 @@ if ( ! function_exists( 'pbt_render_menu_item' ) ) :
     }
 endif;
 
-$menu = pbt_menu_builder( 'primary' );
+$menu = ft_menu_builder( 'primary' );
 
 foreach ( $menu as $item ) {
-    echo pbt_render_menu_item( $item );
+    echo ft_render_menu_item( $item );
 }
 ?>
