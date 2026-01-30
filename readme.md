@@ -50,6 +50,7 @@
 - Assets are built using Vite.js and are located in the `resources` folder.
 - The location of the built assets is specified in the `vite.config.js` file but by default they are located in the `dist` folder.
 - In the `inc/theme-hooks.php` file, we enqueue the built CSS and JS files using WordPress's `wp_enqueue_style` and `wp_enqueue_script` functions.
+- We could have also done that in separate files, or we could have used `inc/theme-hooks.php` file only for declaring hooks and the actual functions in other files. It all depends on the complexity of the actual project and what we find as the most viable solution for the given terms.
 - There are multiple ways how this can be achieved, depending on the complexity of the theme and the requirements. From the class-based approach to simple function-based approach.
 
 ### Where WooCommerce customizations live
